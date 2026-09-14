@@ -21,8 +21,25 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var seen = new HashSet<string>();
+        var result = new List<string>();
+
+        foreach (var word in words)
+        {
+            // Build the mirror (swap the two characters)
+            string mirror = $"{word[1]}{word[0]}";
+
+            // If the mirror is already in the set, we have a pair
+            if (seen.Contains(mirror))
+            {
+                result.Add($"{word} & {mirror}");
+            }
+
+            // Add the current word *after* the check
+            seen.Add(word);
+        }
+
+        return result.ToArray();
     }
 
     /// <summary>
@@ -42,7 +59,16 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            if (string.IsNullOrWhiteSpace(line))
+                continue;
+
+            string degree = fields[3];
+
+            if (degrees.ContainsKey(degree))
+                degrees[degree]++;
+            else
+                degrees[degree] = 1;
+
         }
 
         return degrees;
@@ -66,8 +92,34 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        // 1. Clean: remove spaces, ignore case
+        string s1 = word1.Replace(" ", "").ToLower();
+        string s2 = word2.Replace(" ", "").ToLower();
+
+        // 2. Cheap length check
+        if (s1.Length != s2.Length)
+            return false;
+
+        // 3–4. Count letters of first word
+        var counts = new Dictionary<char, int>();
+        foreach (char c in s1)
+        {
+            if (counts.ContainsKey(c))
+                counts[c]++;
+            else
+                counts[c] = 1;
+        }
+
+        // 5. Undo with second word; fail on missing or already-zero key
+        foreach (char c in s2)
+        {
+            if (!counts.ContainsKey(c) || counts[c] == 0)
+                return false;
+            counts[c]--;
+        }
+
+        // 6. Everything should now be zero
+        return true;
     }
 
     /// <summary>
