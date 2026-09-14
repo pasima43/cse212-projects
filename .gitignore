@@ -366,3 +366,6 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Personal study notes (not part of the graded work)
+w03-interview-notes.md

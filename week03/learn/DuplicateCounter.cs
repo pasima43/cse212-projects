@@ -24,7 +24,23 @@
 
     private static int CountDuplicates(int[] data)
     {
-        // Add code here.
-        return 0;
+        // Plan:
+        // 1. Create a set to remember numbers and a counter for duplicates.
+        // 2. For each number, check if it is already in the set.
+        // 3. If yes, increase the counter.
+        // 4. If no, add the number to the set.
+
+        var unique = new HashSet<int>();
+        var duplicates = 0;
+
+        foreach (var x in data)
+        {
+            if (unique.Contains(x))
+                duplicates++;
+            else
+                unique.Add(x);
+        }
+
+        return duplicates;
     }
 }
